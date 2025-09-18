@@ -1,32 +1,14 @@
 import streamlit as st
-import streamlit_authenticator as stauth
+import bcrypt
 
+import yaml
+from yaml.loader import SafeLoader
 
-# username = ""
-# password = ""
+# load the secure yaml
+with open('config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
 
-# st.title("Hello Streamlit-er 👋")
-# st.markdown(
-#     """ 
-#     This is a playground for you to try Streamlit and have fun. 
-
-#     **There's :rainbow[so much] you can build!**
-    
-#     We prepared a few examples for you to get started. Just 
-#     click on the buttons above and discover what you can do 
-#     with Streamlit. 
-#     """
-# )
-
-# st.title("testing for real")
-
-# st.text_input(username, value="", max_chars=None, key=None, type="default", on_change=None, placeholder="username", disabled=False, width="stretch")
-# st.text_input(password, value="", max_chars=None, key=None, type="password", on_change=None, placeholder=None, disabled=False, width="stretch")
-
-
-# Dummy credentials
-USERNAME = "admin"
-PASSWORD = "password"
+# print(config)
 
 # Initialize session state
 if "logged_in" not in st.session_state:
@@ -38,11 +20,21 @@ def login():
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     if st.button("Login"):
-        if username == USERNAME and password == PASSWORD:
-            st.session_state.logged_in = True
-            st.success("Login successful!")
+        if username in config["credentials"]["usernames"]:
+
+
+            # print(f"user entered password: {type(password.encode('utf-8'))}")
+            # print(f"hashed password: {type(config['credentials']['usernames'][username]['password'])}")
+            # print(f"hashed password: {config['credentials']['usernames'][username]['password'][2:-1].encode('utf-8')}")
+
+            if bcrypt.checkpw(password.encode("utf-8"), config["credentials"]["usernames"][username]["password"][2:-1].encode("utf-8")):
+                st.session_state.logged_in = True
+                st.success("Login successful!")
+                st.rerun()  # 🔁 Force rerun to update UI
+            else:
+                st.error("Invalid Password")
         else:
-            st.error("Invalid credentials")
+            st.error("Invalid Username")
 
 # Main app content
 def main_app():
