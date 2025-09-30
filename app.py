@@ -14,6 +14,12 @@ with open('config.yaml') as file:
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
+if "about" not in st.session_state:
+    st.session_state.about = False
+
+if "home" not in st.session_state:
+    st.session_state.home = False
+
 # Login form
 def login():
     st.title("🔐 Login Page")
@@ -38,8 +44,46 @@ def login():
 
 # Main app content
 def main_app():
+    nav()
+    if st.session_state.about:
+        about()
+    elif st.session_state.home:
+        home()
+    else:
+        home()
+
+# Toggle Nav Switches
+def switchToAbout():
+    st.session_state.about = True
+    st.session_state.home = False
+    print("-------------------------------")
+    print(f"Home: {st.session_state.home}")
+    print(f"About: {st.session_state.about}")
+    print("-------------------------------")
+
+def switchToHome():
+    st.session_state.home = True
+    st.session_state.about = False
+    print("-------------------------------")
+    print(f"Home: {st.session_state.home}")
+    print(f"About: {st.session_state.about}")
+    print("-------------------------------")
+
+# Components for UI
+def nav():
+    if st.session_state.about:
+        st.button("Home", on_click=switchToHome)
+    else:
+        st.button("About", on_click=switchToAbout)
+
+def home():
     st.title("🎉 Welcome to the App")
     st.write("You're now logged in and can access the main content.")
+
+def about():
+    st.title("About Our App")
+    st.write("Our app....")
+
 
 # Render appropriate view
 if st.session_state.logged_in:
