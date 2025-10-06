@@ -3,6 +3,7 @@ import bcrypt
 
 import yaml
 from yaml.loader import SafeLoader
+from example import st_example
 
 # load the secure yaml
 with open('config.yaml') as file:
@@ -79,6 +80,8 @@ def nav():
 def home():
     st.title("🎉 Welcome to the App")
     st.write("You're now logged in and can access the main content.")
+    v = st_example()
+    st.write("Returned value:", v)
 
 def about():
     st.title("About Our App")
