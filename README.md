@@ -27,13 +27,15 @@
     - npm create vite@latest frontend
 6. As of now, can only get npm library streamlit-component-lib to work with react 18 and react-dom 18:
     - We need to move inside "frontend" folder and edit the package.json file:
-        - cd ./frontend
+        <!-- - cd ./frontend
         - vim package.json
         - change these from 19.x.x to:
             - "react": "^18.3.1",
             - "react-dom": "^18.3.1",
             - "@types/react": "^18",
-            - "@types/react-dom": "^18",
+            - "@types/react-dom": "^18", -->
+
+        - npm install react@18 react-dom@18
 7. Install npm packages:
     - npm install
     - npm install streamlit-component-lib
