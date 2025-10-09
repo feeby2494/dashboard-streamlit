@@ -1,11 +1,13 @@
-import streamlit as st
+from shared import st
 import bcrypt
+import os
 
 import yaml
 from yaml.loader import SafeLoader
 from home_component import st_home
 from about_component import st_about
-from map_component import st_map
+
+from routes.map_route import map_route
 
 # load the secure yaml
 with open('config.yaml') as file:
@@ -18,6 +20,8 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 # list of routes
+### Future dynamic route detection
+print([route for route in os.listdir(os.path.join(os.getcwd(), "routes")) if route not in ("__init__.py", "__pycache__")])
 pageRoutes = ["home", "about", "map"]
 
 # init each route in st.session_state
@@ -91,40 +95,11 @@ def about():
     st.write("Our app....")
     v2 = st_about()
     st.write("Returned value:", v2)
-def map():
-    points = [
-        {
-            "name": "New York City",
-            "latitude": 40.7128,
-            "longitude": -74.0060
-        },
-        {
-            "name": "Los Angeles",
-            "latitude": 34.0522,
-            "longitude": -118.2437
-        },
-        {
-            "name": "Chicago",
-            "latitude": 41.8781,
-            "longitude": -87.6298
-        },
-        {
-            "name": "Houston",
-            "latitude": 29.7604,
-            "longitude": -95.3698
-        },
-        {
-            "name": "Miami",
-            "latitude": 25.7617,
-            "longitude": -80.1918
-        }
-    ]
+
+map = map_route
 
 
-    mapReturn = st_map(points=points)
-    st.write("Returned value:", mapReturn)
-
-# stores our route views in definition
+# stores our route views in definition ; will make from names of 'route' dir later
 route_map = {
     "home": home,
     "about": about,
