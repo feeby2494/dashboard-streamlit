@@ -1,33 +1,28 @@
-from shared import st, pd
+from utilites.shared import st, pd
 from map_component import st_map
 
 def map_route():
     points = [
         {
-            "name": "New York City",
-            "latitude": 40.7128,
-            "longitude": -74.0060
+            "name": "Starbucks",
+            "latitude": 32.97117531920037,
+            "longitude": -96.99265809536793
         },
         {
-            "name": "Los Angeles",
-            "latitude": 34.0522,
-            "longitude": -118.2437
+            "name": "Ecclesia Bakery",
+            "latitude": 32.95185254663749,
+            "longitude": -96.95740144436381
         },
         {
-            "name": "Chicago",
-            "latitude": 41.8781,
-            "longitude": -87.6298
+            "name": "Paris Baguette",
+            "latitude": 32.92747927396114,
+            "longitude": -96.9943250809797
         },
         {
-            "name": "Houston",
-            "latitude": 29.7604,
-            "longitude": -95.3698
+            "name": "Starbucks",
+            "latitude": 32.97362385060124,
+            "longitude": -97.03755090732481
         },
-        {
-            "name": "Miami",
-            "latitude": 25.7617,
-            "longitude": -80.1918
-        }
     ]
 
     points_df = pd.DataFrame(points)

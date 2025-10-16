@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import './App.css'
 import { 
@@ -14,14 +14,37 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector'; 
 import { Style, Circle as CircleStyle, Fill, Stroke, RegularShape } from 'ol/style';
 import GeoJSON from 'ol/format/GeoJSON';
+import { fromLonLat, toLonLat } from 'ol/proj';
+import Overlay from 'ol/Overlay.js';
+import { toStringHDMS } from 'ol/coordinate.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 function App(props) {
   const mapRef = useRef(); // 🔹 Create a ref for the map container
   const points = props.args.points;
   console.log(props.args.points);
+  const popupRef = useRef();
+  let [popover, setPopover] = useState(null)
+
+  // Placeholder function to get local points.
+  function getLocalPoints(point, map) {
+    const pointFeatures = [];
+    const pixel = map.getEventPixel(point.originalEvent);
+
+    // Now gets several nearby features; want to get the closest one only
+    map.forEachFeatureAtPixel(pixel, function (pointFeature) {
+        pointFeatures.push(pointFeature);
+    });
+
+    return pointFeatures;
+  }
+
 
 
   useEffect(() => {
+
+    
 
     const map = new Map({
       target: mapRef.current,
@@ -31,10 +54,16 @@ function App(props) {
         }),
       ],
       view: new View({
-        center: [0, 0],
-        zoom: 2,
+        center: fromLonLat([-96.99694730156556, 32.93556622680157]),
+        zoom: 13,
       }),
     });
+
+    // Popup showing the position the user clicked
+    const popup = new Overlay({
+      element: popupRef.current,
+    });
+    map.addOverlay(popup);
 
     Streamlit.setComponentValue("Map initialized");
     Streamlit.setFrameHeight(700);
@@ -67,7 +96,94 @@ function App(props) {
 
           // Add the vector layer to the map 
         map.addLayer(anomalyAlerts);
-        console.log(anomalyAlerts)
+        // console.log(anomalyAlerts);
+
+        // Event handler for map clicks:
+        map.on('singleclick', (evt) => {
+          const coordinate = evt.coordinate;
+          const hdms = toStringHDMS(toLonLat(coordinate));
+
+          // console.log(evt)
+          const localFeatures = getLocalPoints(evt, map)
+          console.log(localFeatures)
+
+          // Array holds each info for each feature received by localFeatures
+          const featuresInfoList = [];
+
+          // Populate featureInfo array => replace with array.map()?
+          if (localFeatures.length > 0 ) {
+              let i, ii
+              for (i = 0, ii = localFeatures.length; i < ii; ++i) {
+
+                  // temp object to hold info for each point
+                  let FeatureInfoObj = localFeatures[i];
+
+                  featuresInfoList.push(FeatureInfoObj);
+                  
+              }
+
+              console.log(Object.entries(featuresInfoList[0]["values_"]).map((item) => {
+                  return `${item[0]} : ${item[1]}`
+              }))      
+              
+              const info_content = 
+                  `
+                      <div class="card-header">
+                          Point Info
+                      </div>
+                      <div class="card-body">
+                          <ul class="list-group list-group-flush fs-6">
+                              ${
+                                  Object.entries(featuresInfoList[0]["values_"]).map(([key, value]) => {
+                                      if(key !== "geometry") {
+                                          return `<li class="list-group-item" key=${key}>
+                                              ${key} : ${value}
+                                          </li>`;
+                                      }
+                                  }).join('')
+                              }
+                          </ul>
+                      </div>
+                  `
+
+              // Set element html to innerContent and display 
+              let element = popupRef.current;
+              popup.setPosition(coordinate);
+              
+              if (element) {
+                  element.style.display = 'block';
+                  element.innerHTML = info_content;
+              } else {
+                  console.log("element is not there: ", element)
+              }
+              
+
+              // if exit button clicked, then destory overlay popup       
+
+              // Correctly serialize the popover instance data before sending to streamlit
+              const popoverData = { 
+                  content: info_content, 
+                  title: "Point Info", 
+              };
+              Streamlit.setComponentValue(JSON.stringify(popoverData));
+              
+              
+          } else {
+              // get rid of popup
+              popup.setPosition(undefined);
+              // return empty obj to streamlit
+              Streamlit.setComponentValue(null);
+          }
+
+          console.log(featuresInfoList[0])
+          
+      });
+
+
+
+        
+        
+        
       }
     } catch (error) {
         console.error("error loading geojson data: (Maybe no points): Ignoring error: ", error);
@@ -78,6 +194,9 @@ function App(props) {
   }, [points]);
 
   
+ 
+
+
 
   return (
     <>
@@ -86,10 +205,11 @@ function App(props) {
       style={{ height: '100%', width: '100%'}}
       className="map-container"
       />
+      <div id="popup" ref={popupRef} className="card p-0" style={{ display: 'none'}}/>
     </>
     
   );
 }
 
 export default withStreamlitConnection(App);
-// export default App;
+//export default App;

@@ -1,2 +1,7 @@
 .env
 venv
+
+__pycache__
+about_component/__pycache__
+home_component/__pycache__
+map_component/__pycache__

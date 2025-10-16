@@ -1,23 +1,24 @@
-from shared import st
-import bcrypt
+from utilites.shared import st
+
 import os
 
-import yaml
-from yaml.loader import SafeLoader
 from home_component import st_home
 from about_component import st_about
 
 from routes.map_route import map_route
+from routes.login import login
 
-# load the secure yaml
-with open('config.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
 
-# print(config)
+st.set_page_config(
+    page_title="Seolynn Repair - Beta Version", page_icon="❗", initial_sidebar_state="expanded", layout="wide"
+)
 
 # Initialize session state
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
+if "register" not in st.session_state:
+    # init register var
+    st.session_state.register = False
 
 # list of routes
 ### Future dynamic route detection
@@ -33,33 +34,6 @@ for route in pageRoutes:
         else:
             st.session_state[route] = False
         #print(f"Beginning:\nroute: {route}\nsession:{st.session_state[route]}")
-
-#print(f"before logging in: {st.session_state}")
-
-# Login form
-def loginSubmit(username, password):
-    if username in config["credentials"]["usernames"]:
-        # print(f"user entered password: {type(password.encode('utf-8'))}")
-        # print(f"hashed password: {type(config['credentials']['usernames'][username]['password'])}")
-        # print(f"hashed password: {config['credentials']['usernames'][username]['password'][2:-1].encode('utf-8')}")
-
-        if bcrypt.checkpw(password.encode("utf-8"), config["credentials"]["usernames"][username]["password"][2:-1].encode("utf-8")):
-            st.session_state.logged_in = True
-            st.success("Login successful!")
-            st.rerun()  # 🔁 Force rerun to update UI
-        else:
-            st.error("Invalid Password")
-    else:
-        st.error("Invalid Username")
-
-def login():
-    st.title("🔐 Login Page")
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-    st.button("Login", on_click=lambda u=username, p=password: loginSubmit(u, p))
-
-    
-
 
 # Toggle Nav Switches
 
@@ -79,9 +53,27 @@ def switchToRoute(selected_page, routes):
 
 # Components for UI
 def nav(pageRoutes):
-    for route in pageRoutes:  # want to show list of all routes that are set to false
-        if st.session_state[route] == False:
-            st.button(f"{route.capitalize()}", on_click=lambda r=route, p=pageRoutes: switchToRoute(r, p))
+    # Make a top container and col for buttons
+    nav_bar = st.container()
+    # left, middle, right = st.columns()
+
+
+
+
+    with nav_bar:
+        
+        # filter the Flase routes
+        inactive_routes = [r for r in pageRoutes if st.session_state.get(r) == False]
+
+        # creat col for inactive route
+        cols = st.columns(len(inactive_routes))
+        
+        for col, route in zip(cols, inactive_routes):  # want to show list of all routes that are set to false
+            with col:    
+                st.button(f"{route.capitalize()}", on_click=lambda r=route, p=pageRoutes: switchToRoute(r, p))
+
+    
+
 
 # individual Route Views
 def home():
@@ -103,7 +95,7 @@ map = map_route
 route_map = {
     "home": home,
     "about": about,
-    "map": map
+    "map": map,
 }
 
 

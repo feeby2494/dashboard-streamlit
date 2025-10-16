@@ -1,17 +1,25 @@
+cookie:
+  expiry_days: 30
+  key: some_signature_key
+  name: some_cookie_name
 credentials:
   usernames:
+    clynn:
+      email: toby2494@gmail.com
+      name: Cooper Lynn
+      password: def
     jlynn:
       email: toby2494@gmail.com
       name: Jamie Lynn
       password: b'$2b$12$H.wUFq9IZ002hDDVra7ZD.tq9HP3uia39Z1UE8tMQeDEl523ohchW'
-    clynn:
-      email: toby2494@gmail.com
-      name: Cooper Lynn
-      password: def # To be replaced with hashed password
-cookie:
-  expiry_days: 30
-  key: some_signature_key # Must be string
-  name: some_cookie_name
+    test:
+      email: test@gmail.com
+      name: test
+      password: b'$2b$12$vSHnM8O57x5eTQ.fsszWe.puFAXwMmJFD4D9RYSm8oIiF.iplJFyW'
+    test2:
+      email: test@gmail.com
+      name: test2
+      password: b'$2b$12$qyXpI1kjQCwjpREuOr1tZutiB7xJEMaqN.mD82gcYeFQUq59d1fBC'
 preauthorized:
   emails:
   - toby2494@gmail.com
