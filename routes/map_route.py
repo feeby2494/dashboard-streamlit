@@ -1,6 +1,5 @@
 from utilites.shared import st, pd, os
 from map_component import st_map
-from fastkml import KML
 
 def map_route():
     points = [

@@ -3,9 +3,6 @@ import os
 import pandas as pd
 import geopandas as gpd
 import json
-from fastkml import KML
-from fastkml.utils import find, find_all
-from fastkml import Placemark, Point, StyleUrl, Style
 
 
 _component_funct = components.declare_component(
