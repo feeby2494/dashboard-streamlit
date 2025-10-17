@@ -12,20 +12,24 @@ import OSM from 'ol/source/OSM.js'
 import 'ol/ol.css';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector'; 
-import { Style, Circle as CircleStyle, Fill, Stroke, RegularShape } from 'ol/style';
+import { Style, Circle as CircleStyle, Fill, Stroke, Icon } from 'ol/style';
 import GeoJSON from 'ol/format/GeoJSON';
 import { fromLonLat, toLonLat } from 'ol/proj';
 import Overlay from 'ol/Overlay.js';
 import { toStringHDMS } from 'ol/coordinate.js';
+import KML from 'ol/format/KML';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 function App(props) {
   const mapRef = useRef(); // 🔹 Create a ref for the map container
   const points = props.args.points;
+  const kml_json = props.args.kml_json;
   console.log(props.args.points);
   const popupRef = useRef();
-  let [popover, setPopover] = useState(null)
+  let [popover, setPopover] = useState(null);
+
+  console.log(kml_json);
 
   // Placeholder function to get local points.
   function getLocalPoints(point, map) {
@@ -112,60 +116,64 @@ function App(props) {
 
           // Populate featureInfo array => replace with array.map()?
           if (localFeatures.length > 0 ) {
-              let i, ii
-              for (i = 0, ii = localFeatures.length; i < ii; ++i) {
+            let i, ii
+            for (i = 0, ii = localFeatures.length; i < ii; ++i) {
 
-                  // temp object to hold info for each point
-                  let FeatureInfoObj = localFeatures[i];
+                // temp object to hold info for each point
+                let FeatureInfoObj = localFeatures[i];
 
-                  featuresInfoList.push(FeatureInfoObj);
-                  
-              }
+                featuresInfoList.push(FeatureInfoObj);
+                
+            }
 
-              console.log(Object.entries(featuresInfoList[0]["values_"]).map((item) => {
-                  return `${item[0]} : ${item[1]}`
-              }))      
+            console.log(Object.entries(featuresInfoList[0]["values_"]).map((item) => {
+                return `${item[0]} : ${item[1]}`
+            }))      
+            
+            const info_content = 
+                `
+                    <div class="card-header">
+                        Point Info
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush fs-6">
+                            ${
+                                Object.entries(featuresInfoList[0]["values_"]).map(([key, value]) => {
+                                    if(key !== "geometry") {
+                                        return `<li class="list-group-item" key=${key}>
+                                            ${key} : ${value}
+                                        </li>`;
+                                    }
+                                }).join('')
+                            }
+                        </ul>
+                    </div>
+                `
+            
+            const latitude = featuresInfoList[0]["values_"]["latitude"]
+            const longitude =  featuresInfoList[0]["values_"]["longitude"] 
+            const name = featuresInfoList[0]["values_"]["name"]
+            
+            // Set element html to innerContent and display 
+            let element = popupRef.current;
+            popup.setPosition(coordinate);
+            
+            if (element) {
+                element.style.display = 'block';
+                element.innerHTML = info_content;
+            } else {
+                console.log("element is not there: ", element)
+            }
               
-              const info_content = 
-                  `
-                      <div class="card-header">
-                          Point Info
-                      </div>
-                      <div class="card-body">
-                          <ul class="list-group list-group-flush fs-6">
-                              ${
-                                  Object.entries(featuresInfoList[0]["values_"]).map(([key, value]) => {
-                                      if(key !== "geometry") {
-                                          return `<li class="list-group-item" key=${key}>
-                                              ${key} : ${value}
-                                          </li>`;
-                                      }
-                                  }).join('')
-                              }
-                          </ul>
-                      </div>
-                  `
 
-              // Set element html to innerContent and display 
-              let element = popupRef.current;
-              popup.setPosition(coordinate);
-              
-              if (element) {
-                  element.style.display = 'block';
-                  element.innerHTML = info_content;
-              } else {
-                  console.log("element is not there: ", element)
-              }
-              
+            // if exit button clicked, then destory overlay popup       
 
-              // if exit button clicked, then destory overlay popup       
-
-              // Correctly serialize the popover instance data before sending to streamlit
-              const popoverData = { 
-                  content: info_content, 
-                  title: "Point Info", 
-              };
-              Streamlit.setComponentValue(JSON.stringify(popoverData));
+            // Correctly serialize the popover instance data before sending to streamlit
+            const popoverData = { 
+                content: info_content, 
+                title: "Point Info", 
+            };
+            Streamlit.setComponentValue(JSON.stringify({ "name": name, "lat": latitude, "long": longitude }));
               
               
           } else {
@@ -176,6 +184,8 @@ function App(props) {
           }
 
           console.log(featuresInfoList[0])
+
+
           
       });
 
@@ -189,6 +199,52 @@ function App(props) {
         console.error("error loading geojson data: (Maybe no points): Ignoring error: ", error);
     }
 
+
+    // add kml to map http://localhost:8502/dashboard/static
+    const kmlLayer = new VectorLayer({
+      title: "KML Layer",
+      source: new VectorSource({
+        url: "http://localhost:8502/dashboard/app/static/sampleRoute.kml",
+        format: new KML({
+          extractStyles: false,
+        }),
+      }),
+      // style: new Style({
+      //   stroke: new Stroke({
+      //       color: "blue",
+      //       width: 9,
+      //       lineCap: 'round',
+      //   })
+      // })
+      style: function (feature) {
+        const geomType = feature.getGeometry().getType();
+        if (geomType === 'LineString') {
+          return new Style({
+            stroke: new Stroke({
+              color: 'rgba(255, 162, 219, 0.9)',
+              width: 9,
+              lineCap: 'round',
+            }),
+          });
+        } else if (geomType === 'Point') {
+          return new Style({
+            image: new CircleStyle({
+              radius: 9,
+              fill: new Fill({
+                // color: '#ff819f'
+                color: 'rgba(255,129,159,0.8)'
+              }),
+              stroke: new Stroke({
+                color: '#000',
+                width: 0.5
+              }) 
+            })
+          });
+        }
+      }
+    });
+
+    map.addLayer(kmlLayer);
 
     return () => map.setTarget(undefined)
   }, [points]);

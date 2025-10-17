@@ -1,0 +1,363 @@
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/kml/2.2 https://developers.google.com/kml/schema/kml22gx.xsd">
+    <Document>
+        
+        <!-- Define styles -->
+        <Style id="centralOfficeStyle">
+            <IconStyle>
+                <Icon>
+                <href>office-block.png</href>
+                <gx:w>64</gx:w>
+                <gx:h>64</gx:h>
+                </Icon>
+            </IconStyle>
+            <LabelStyle>
+                <color>ffffffff</color>
+            </LabelStyle>
+        </Style>
+
+        <Style id="residentialClientStyle">
+            <IconStyle>
+                <Icon>
+                <href>http://maps.google.com/mapfiles/kml/shapes/homegardenbusiness.png</href>
+                <gx:w>64</gx:w>
+                <gx:h>64</gx:h>
+                </Icon>
+            </IconStyle>
+            <LabelStyle>
+                <color>ffffffff</color>
+            </LabelStyle>
+        </Style>
+
+        <Style id="businessClientStyle">
+            <IconStyle>
+                <Icon>
+                <href>http://maps.google.com/mapfiles/kml/shapes/shopping.png</href>
+                <gx:w>64</gx:w>
+                <gx:h>64</gx:h>
+                </Icon>
+            </IconStyle>
+            <LabelStyle>
+                <color>ffffffff</color>
+            </LabelStyle>
+        </Style>
+
+        <Style id="handholeStyle">
+            <IconStyle>
+                <Icon>
+                <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+                <gx:w>64</gx:w>
+                <gx:h>64</gx:h>
+                </Icon>
+            </IconStyle>
+            <LabelStyle>
+                <color>ffffffff</color>
+            </LabelStyle>
+        </Style>
+
+        <Style id="groundStyle">
+            <IconStyle>
+                <Icon>
+                <href>http://maps.google.com/mapfiles/kml/pushpin/grn-pushpin.png</href>
+                <gx:w>64</gx:w>
+                <gx:h>64</gx:h>
+                </Icon>
+            </IconStyle>
+            <LabelStyle>
+                <color>ffffffff</color>
+            </LabelStyle>
+        </Style>
+
+        <Style id="poleStyle">
+            <IconStyle>
+                <Icon>
+                <href>http://maps.google.com/mapfiles/kml/pushpin/blu-pushpin.png</href>
+                <gx:w>64</gx:w>
+                <gx:h>64</gx:h>
+                </Icon>
+            </IconStyle>
+            <LabelStyle>
+                <color>ffffffff</color>
+            </LabelStyle>
+        </Style>
+
+        <!-- Define Routes -->
+        <Folder>
+            <name>Sample Route</name>
+
+            <!-- Define a Route's Linestring -->
+            <Placemark>
+                <name>Sample Route Line</name>
+                <LineString>
+                <coordinates>
+                    -96.97948523401429,32.973563639170834,0
+                    -96.9794154965995,32.97349838440505,0
+                    -96.98043004215249,32.973504009816054,0
+                        <!-- skipped this point -->
+                    -96.98098829010624,32.97065427337262,0
+                    -96.98104649886396,32.969607584739926,0
+                    -96.9838500778318,32.96957045537084,0
+                    -96.98568572826109,32.9695460674973,0
+                    -96.987674440235,32.969561776180555,0
+                    -96.98996035287617,32.969448700267165,0
+                    -96.99336418157186,32.9695008327577,0
+                    -96.99348622207165,32.969550901184554,0
+                    -96.99394622092562,32.969562152512545,0
+                    -96.99397103134689,32.96917116802266,0
+                    -96.99389005039407,32.96912254581552,0
+                    -96.99378366010725,32.96595126389698,0
+                    -96.99374794798689,32.96157077627224,0
+                    -96.99365639211747,32.95862400579224,0
+                    -96.99367011052031,32.95520281175287,0
+                    -96.99368197633282,32.95182581063322,0
+                    -96.99368854267865,32.950352562969606,0
+                    -96.9939405257571,32.95033052261289,0
+                </coordinates>
+                </LineString>
+            </Placemark>
+
+            <!-- Define a Route's Points -->
+            <Placemark>
+                <styleUrl>#residentialClientStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="Client_demarc"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates> 
+                        -96.97948523401429,32.973563639170834,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole1"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.9794154965995,32.97349838440505,0 
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole2"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.98043004215249,32.973504009816054,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole3_skipped"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole4"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.98098829010624,32.97065427337262,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole5"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.98104649886396,32.969607584739926,0 
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole6"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.9838500778318,32.96957045537084,0 
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole7"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.98568572826109,32.9695460674973,0 
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole8"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.987674440235,32.969561776180555,0 
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole9"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.98996035287617,32.969448700267165,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#groundStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="ground1"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.99336418157186,32.9695008327577,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole10"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.99348622207165,32.969550901184554,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole11"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.99394622092562,32.969562152512545,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#groundStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="ground2"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.99397103134689,32.96917116802266,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole12"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.99389005039407,32.96912254581552,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole13"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.99378366010725,32.96595126389698,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole14"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.99374794798689,32.96157077627224,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole15"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.99365639211747,32.95862400579224,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole16"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.99367011052031,32.95520281175287,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#handholeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="handhole17"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.99368197633282,32.95182581063322,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#groundStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="ground3"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.99368854267865,32.950352562969606,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <styleUrl>#centralOfficeStyle</styleUrl>
+                <ExtendedData>
+                    <Data name="CO1"/>
+                </ExtendedData>
+                <Point>
+                    <coordinates>
+                        -96.9939405257571,32.95033052261289,0
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+    </Document>
+</kml>

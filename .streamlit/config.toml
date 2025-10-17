@@ -4,4 +4,5 @@ port = 8502
 enableCORS = false
 enableXsrfProtection = false
 baseUrlPath = "dashboard"
+enableStaticServing = true
 

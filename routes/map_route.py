@@ -1,5 +1,6 @@
-from utilites.shared import st, pd
+from utilites.shared import st, pd, os
 from map_component import st_map
+from fastkml import KML
 
 def map_route():
     points = [
@@ -27,17 +28,19 @@ def map_route():
 
     points_df = pd.DataFrame(points)
 
+
+    
     if "points_df" not in st.session_state:
         st.session_state.points_df = pd.DataFrame(points)
 
-    # with st.form("data_input"):
-    #     st.write("future cvs/excel import feature")
-    #     st.form_submit_button('Submit my picks')
-    edited_df = st.data_editor(st.session_state.points_df, num_rows="dynamic")
-
-    if st.button("update map:"):
-        st.session_state.points_df = edited_df # save edits
+    ################## Can edit these point during session, but maybe not needed
+    #edited_df = st.data_editor(st.session_state.points_df, num_rows="dynamic")
+    #
+    #if st.button("update map:"):
+    #    st.session_state.points_df = edited_df # save edits
+    ##################
+    
     
     mapReturn = st_map(points_df=st.session_state.points_df) # want to pass in edited dataframe to map
     st.write("Returned value:", mapReturn)
-    
+    st.page_link("https://www.flaticon.com/free-icons/town", label="Town icons created by Zlatko Najdenovski - Flaticon", icon="🌎")

@@ -3,8 +3,9 @@ import os
 import pandas as pd
 import geopandas as gpd
 import json
-
-
+from fastkml import KML
+from fastkml.utils import find, find_all
+from fastkml import Placemark, Point, StyleUrl, Style
 
 
 _component_funct = components.declare_component(
@@ -29,8 +30,6 @@ def st_map(points_df):
 
         # gdf = gpd.GeoDataFrame(points, geometry=gpd.points_from_xy(points["longitude"], points["latitude"]))
         geojson = gdf.to_json()
-
-        print(geojson)
 
         component_value = _component_funct(points=geojson)
         return component_value
